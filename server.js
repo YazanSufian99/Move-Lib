@@ -5,6 +5,7 @@ const app =express();
 
 app.get("/",helloMovie);
 app.get("/favorit",hellofavorit);
+app.get("*",notFoundHandler);
 
 function helloMovie(req ,res){
     let arr=[]
@@ -14,10 +15,14 @@ function helloMovie(req ,res){
     return res.status(200).json(arr)   
 }
 
-function hellofavorit(){
- return response.send("Welcome to Favorite Page")
+function hellofavorit(req,res){
+ return res.send("Welcome to Favorite Page")
 }
 
+function notFoundHandler(req,res){
+    return res.send("Page Not Found")
+}
+   
 
 
 
