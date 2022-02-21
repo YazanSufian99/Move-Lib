@@ -11,6 +11,8 @@ web site to show movies and its detalis
 
 ## Getting Started
 
+ ### 20/2/2022 updates
+
 1- Create server.js file
 
 2- npm init -y
@@ -22,6 +24,18 @@ web site to show movies and its detalis
 5- const app = express()
 
 6- app.listen(PORT, ()=>{ console.log("Anything") })
+ 
+ ### 20/2/2022 updates
+
+1- install axios
+
+2-create .env file to save api key inside it.
+
+3- take API from TMDB wepsite and clone it .
+
+4- create new tow endpoints (trending , search)
+
+![image](./assest/wrrs-API.jpg)
 
 ## Project Features
 
