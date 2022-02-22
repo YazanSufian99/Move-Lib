@@ -37,6 +37,11 @@ web site to show movies and its detalis
 
 ![image](./assest/wrrs-API.jpg)
 
+### 20/2/2022 updates
+
+1- install PostgerSQL
+2-Run PostgerSQL
+
 ## Project Features
 
 add main page shoing move details and another page for favorute
