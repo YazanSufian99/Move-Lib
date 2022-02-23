@@ -47,6 +47,16 @@ web site to show movies and its detalis
 
 4- retrive data from table 
 
+### 23/2/2022 updates
+
+**Create request to the database for the following endpoints:**
+ 
+>> /updatMovie/:id: create an **update** request to *specific* movie in the database.
+
+>> /deleteMovie/:id: create a delete request to remove a specific movie from database.
+
+>> /getMovie/id: Create a get request to get a *specific* movie from the database
+
 ## Project Features
 
 add main page shoing move details and another page for favorute

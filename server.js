@@ -66,7 +66,7 @@ app.get("/",helloMovie);
 app.get("/favorit",hellofavorit);
 app.get("/trending",helloTrending);
 app.get("/search",hellosearch);
-app.get ("/getMov/:id", getMovie)// to get a specific movie from the database
+app.get ("/getdMov/:i", getMovie)// to get a specific movie from the database
 app.put("/updatMovie/:id",updateMovie)//  update comments for a specific movie in the database.
 app.delete("/deleteMovie/:id",deleteMovie)
 app.get("*",notFoundHandler);
