@@ -25,7 +25,7 @@ web site to show movies and its detalis
 
 6- app.listen(PORT, ()=>{ console.log("Anything") })
  
- ### 20/2/2022 updates
+ ### 21/2/2022 updates
 
 1- install axios
 
@@ -37,10 +37,15 @@ web site to show movies and its detalis
 
 ![image](./assest/wrrs-API.jpg)
 
-### 20/2/2022 updates
+### 22/2/2022 updates
 
 1- install PostgerSQL
-2-Run PostgerSQL
+
+2-Run PostgerSQL 
+
+3- Creating table using pg 
+
+4- retrive data from table 
 
 ## Project Features
 
