@@ -1,4 +1,4 @@
-const { response } = require("express");
+const  response = require("express");
 const express= require("express");
 const movies =require("./data.json");
 const app =express();
@@ -58,45 +58,20 @@ function Movie(title, overview, poster_path,id,release_date){
 }
 //database
 
-app.get("/",helloMovie);
-app.get("/favorit",hellofavorit);
-app.get("/trending",helloTrending);
-app.get("/search",hellosearch);
-app.get("*",notFoundHandler);
-
 app.use(express.json());
 app.post("/addMovies",helloAddMovies);
 app.get("/getMovies",getVaforiteMovies)
 
+app.get("/",helloMovie);
+app.get("/favorit",hellofavorit);
+app.get("/trending",helloTrending);
+app.get("/search",hellosearch);
+app.get ("/getMov/:id", getMovie)// to get a specific movie from the database
+app.put("/updatMovie/:id",updateMovie)//  update comments for a specific movie in the database.
+app.delete("/deleteMovie/:id",deleteMovie)
+app.get("*",notFoundHandler);
 
 app.use(errorHandler);
-function errorHandler(error,req,res){
-    const err ={
-        status : 500,
-        messge : error
-    }
-    return res.status(500).send(err);
-}
-
-function helloAddMovies(req,res){
-    const mov =req.body;
-    // console.log(req.body);
-    const sql = `INSERT INTO favMovies(title,overview,release_date,poster_path) VALUES($1,$2,$3,$4) RETURNING *`
-   const arrvalues=[mov.title,mov.overview,mov.release_date,mov.poster_path];
-    client.query(sql,arrvalues).then((result)=>{
-        response.status(201).json(result.rows);
-    }).catch(error =>{
-        errorHandler(error,req,res);
-    }) 
-}
-
-function getVaforiteMovies(req,res){
-    const sql =`SELECT * FROM favMovies`;
-    client.query(sql).then((result)=>{
-        response.status(200).json(result.rows);
-        // console.log(result);
-    })
-}
 
 function helloMovie(req ,res){
     let arr=[]
@@ -104,13 +79,68 @@ function helloMovie(req ,res){
     // arr.push(movies.overview);
     // arr.push(movies.poster_path);
      movies.data.forEach((value) => {
-        let theMovie = new Movie(value.title, value.overview, value.poster_path);
+        let theMovie = new Movie( value.id,value.title, value.overview,value.release_date , value.poster_path);
         arr.push(theMovie);
         return res.status(200).json(arr);
     }).catch(error =>{
         errorHandler("Sorry, something went wrong",req,res);
-    })  
-}
+    });  
+};
+
+function getMovie(req,res){
+    let id =req.params.id;
+    const sql = `SELECT * FROM favoritMovies WHERE id=$1;`;
+    const value=[id];
+    client.query(sql,value).then((result) =>{
+        return res.status(200).json(result.rows);
+    }).catch(error =>{
+        errorHandler(error,req,res);
+    }); 
+};
+
+function updateMovie(req,res){
+    const id = req.params.id;
+    const movies = req.body;
+    const sql = `UPDATE favoritMovies SET title=$1, overview=$2, release_date=$3, poster_path=$4 WHERE id=$5 RETURNING *; `;
+    const value=[movies.title, movies.overview, movies.release_date, movies.poster_path, id]
+    client.query(sql,value).then((result)=>{
+        return res.status(200).json(result.rows);
+    }).catch(error =>{
+        errorHandler(error,req,res);
+    }); 
+};
+
+function deleteMovie(req,res)
+{
+    const id =req.params.id;
+    const sql =`DELETE FROM favoritMovies WHERE id =$1;`;
+    const value =[id];
+    client.query(sql,value).then(() =>{
+        return res.status(204).json({})
+    }).catch(error =>{
+        errorHandler(error,req,res);
+    }); 
+};
+function helloAddMovies(req,res){
+    const mov =req.body;
+    // console.log(req.body);
+    const sql = `INSERT INTO favoritMovies(title,overview,release_date,poster_path) VALUES($1,$2,$3,$4) RETURNING *`
+   const arrvalues=[mov.title,mov.overview,mov.release_date,mov.poster_path];
+    client.query(sql,arrvalues).then((result)=>{
+        response.status(201).json(result.rows);
+    }).catch(error =>{
+        errorHandler(error,req,res);
+    }); 
+};
+
+function getVaforiteMovies(req,res){
+    const sql =`SELECT * FROM favMovies`;
+    client.query(sql).then((result)=>{
+        response.status(200).json(result.rows);
+        // console.log(result);
+    })
+};
+
 
 function hellofavorit(req,res){
  return res.send("Welcome to Favorite Page")
@@ -136,15 +166,15 @@ function helloTrending(req,res){
 
 function hellosearch(req,res){
    const search ="The Royal Treatment,";
-    let Sresult = [];
+    let result = [];
     
     axios.get(` https://api.themoviedb.org/3/search/movie?api_key=${APIKEY}&language=en-US&query=${search}`)
    .then(apiResponse =>{
        apiResponse.data.results.map(value =>{ // results>> is the array name in API link (and we shoud change it according to what API link array name)
            let oneMoveSearch =new Movie(value.title || "A/N" ,value.overview || "A/N" ,value.release_date || "A/N" ,value.id || "A/N" ,value.release_date || "A/N")
-           Sresult.push(oneMoveSearch);
+           result.push(oneMoveSearch);
        })
-       return res.status(200).json(Sresult);
+       return res.status(200).json(result);
   }).catch(error =>{
       errorHandler("Sorry, something went wrong",req,res);
   })
@@ -156,6 +186,14 @@ function notFoundHandler(req,res){
     return res.send("Page Not Found")
 }
    
+function errorHandler(error,req,res){
+    const err ={
+        status : 500,
+        messge : error
+    }
+    return res.status(500).send(err);
+}
+
 
 
 // if every thing is og with database then run the server
