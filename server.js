@@ -48,9 +48,9 @@ const client = new pg.Client(DATABASE_URL);
 
 
 
-function Movie(title, overview, poster_path,id,release_date){
-    this.id=id;
+function Movie(title, id,overview, release_date ,poster_path,){
     this.title=title;
+    this.id=id;
     this.overview=overview;
     this.release_date=release_date;
     this.poster_path=poster_path;
@@ -66,7 +66,7 @@ app.get("/",helloMovie);
 app.get("/favorit",hellofavorit);
 app.get("/trending",helloTrending);
 app.get("/search",hellosearch);
-app.get ("/getMov/:id", getMovie)// to get a specific movie from the database
+app.get ("/getdMov/:i", getMovie)// to get a specific movie from the database
 app.put("/updatMovie/:id",updateMovie)//  update comments for a specific movie in the database.
 app.delete("/deleteMovie/:id",deleteMovie)
 app.get("*",notFoundHandler);
@@ -81,10 +81,9 @@ function helloMovie(req ,res){
      movies.data.forEach((value) => {
         let theMovie = new Movie( value.id,value.title, value.overview,value.release_date , value.poster_path);
         arr.push(theMovie);
+        console.log(arr);
         return res.status(200).json(arr);
-    }).catch(error =>{
-        errorHandler("Sorry, something went wrong",req,res);
-    });  
+    })  
 };
 
 function getMovie(req,res){
@@ -165,21 +164,19 @@ function helloTrending(req,res){
 }
 
 function hellosearch(req,res){
-   const search ="The Royal Treatment,";
+   const search =req.query.movies;
     let result = [];
     
     axios.get(` https://api.themoviedb.org/3/search/movie?api_key=${APIKEY}&language=en-US&query=${search}`)
    .then(apiResponse =>{
        apiResponse.data.results.map(value =>{ // results>> is the array name in API link (and we shoud change it according to what API link array name)
-           let oneMoveSearch =new Movie(value.title || "A/N" ,value.overview || "A/N" ,value.release_date || "A/N" ,value.id || "A/N" ,value.release_date || "A/N")
+           let oneMoveSearch =new Movie(value.title || "A/N" ,value.id || "A/N" ,overview || "A/N" ,value.release_date || "A/N" ,value.poster_path || "A/N");
            result.push(oneMoveSearch);
-       })
-       return res.status(200).json(result);
-  }).catch(error =>{
-      errorHandler("Sorry, something went wrong",req,res);
+           
+        })
+        return res.status(200).json(result);
   })
 
-  
 }
 
 function notFoundHandler(req,res){
