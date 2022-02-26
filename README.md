@@ -51,12 +51,22 @@ web site to show movies and its detalis
 
 **Create request to the database for the following endpoints:**
  
->> /updatMovie/:id: create an **update** request to *specific* movie in the database.
+> /updatMovie/:id: create an **update** request to *specific* movie in the database.
 
->> /deleteMovie/:id: create a delete request to remove a specific movie from database.
+> /deleteMovie/:id: create a delete request to remove a specific movie from database.
 
->> /getMovie/id: Create a get request to get a *specific* movie from the database
+> /getMovie/id: Create a get request to get a *specific* movie from the database
 
 ## Project Features
 
 add main page shoing move details and another page for favorute
+
+### 24/2/2022 updates
+
+finish working in the movie app and deployed a link of the  server
+
+what I’ve learned so far?
+
+- API
+- JS SERVER
+- HEROKU
