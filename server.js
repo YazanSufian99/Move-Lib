@@ -39,12 +39,16 @@ const APIKEY =process.env.APIKEY;
 CREATE DATABASE 'dbName' then \l to see it in the table
 */
 // pg  >> connect the db with the server
+const PORT =process.env.PORT;
+
 const pg =require("pg");
 const DATABASE_URL= process.env.DATABASE_URL;
-
 //Initalize the connection 
-const client = new pg.Client(DATABASE_URL);
-
+// const client = new pg.Client(DATABASE_URL);
+const client = new pg.Client({
+    connectionString:process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false}
+});
 
 
 
@@ -196,7 +200,7 @@ function errorHandler(error,req,res){
 // if every thing is og with database then run the server
 client.connect()
 .then(()=>{
-    app.listen(5000, () => {
+    app.listen(PORT, () => {
         console.log('Listen to port 5000');
     });
 });
