@@ -44,14 +44,16 @@ const PORT =process.env.PORT;
 const pg =require("pg");
 const DATABASE_URL= process.env.DATABASE_URL;
 //Initalize the connection 
-// const client = new pg.Client(DATABASE_URL);
-const client = new pg.Client({
-    connectionString:process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false}
-});
+const client = new pg.Client(DATABASE_URL);
+// const client = new pg.Client({
+//     connectionString:process.env.DATABASE_URL,
+//     ssl: { rejectUnauthorized: false}
+// });
 
 
-app.use(cors());
+app.use(cors({
+    origin:"*"
+}));
 
 app.use(express.json());
 app.post("/addMovies",helloAddMovies);
