@@ -1,5 +1,6 @@
 const  response = require("express");
 const express= require("express");
+const cors =require("cors");
 const movies =require("./data.json");
 const app =express();
 
@@ -18,7 +19,6 @@ Now how to let our server know about api key and read it  ?
 
     3- requier dotenv
 */
-
 // read dotenv file
 const dotenv =require("dotenv");
 
@@ -51,16 +51,7 @@ const client = new pg.Client({
 });
 
 
-
-function Movie(title, id,overview, release_date ,poster_path,){
-    this.title=title;
-    this.id=id;
-    this.overview=overview;
-    this.release_date=release_date;
-    this.poster_path=poster_path;
-    
-}
-//database
+app.use(cors());
 
 app.use(express.json());
 app.post("/addMovies",helloAddMovies);
@@ -76,6 +67,17 @@ app.delete("/deleteMovie/:id",deleteMovie)
 app.get("*",notFoundHandler);
 
 app.use(errorHandler);
+
+
+function Movie(title, id,overview, release_date ,poster_path,){
+    this.title=title;
+    this.id=id;
+    this.overview=overview;
+    this.release_date=release_date;
+    this.poster_path=poster_path;
+    
+}
+//database
 
 function helloMovie(req ,res){
     let arr=[]
